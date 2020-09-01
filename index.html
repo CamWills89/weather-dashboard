@@ -1,11 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic.min.css"
+        integrity="sha512-LeCmts7kEi09nKc+DwGJqDV+dNQi/W8/qb0oUSsBLzTYiBwxj0KBlAow2//jV7jwEHwSCPShRN2+IWwWcn1x7Q=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+
+<body class="flex-column min-100-vh">
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div id="search-form" class="col-4">
+                    <h3>Search for a City:</h3>
+                    <div class="input-group mb-3">
+                        <input type="text" class="" placeholder="Search for City" aria-label="Search for City"
+                            aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit"><span class="oi"
+                                    data-glyph="magnifying-glass"></span></button>
+                        </div>
+                    </div>
     
+                    <div id="search history" class="col-4">
+                        <h2>search history</h2>
+                    </div>
+                </div>
+                <div>
+                    <div id="weather-dash" class="col-8"><h2>Weather</h2></div>
+                    <div id="five-day-weather" class="col-8">
+                        <h2>5-day weaher</h2>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </main>
+
+    <script src="assets/js/script.js"></script>
 </body>
+
 </html>
