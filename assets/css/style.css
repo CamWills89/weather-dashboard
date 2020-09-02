@@ -4,7 +4,7 @@
 
   
 body {
-    background-color: whitesmoke;
+    background-color: rgb(226, 214, 214);
     margin: 0;
     padding: 0;
     font-family: 'Times New Roman', Times, serif;
@@ -14,7 +14,7 @@ body {
 
   header {
     background-color: rgb(59, 58, 58);
-    color: whitesmoke;
+    color: rgb(226, 214, 214);
     display: flex;
     justify-content: center;
     padding: 0.4rem;
@@ -23,12 +23,12 @@ h2 {
   font-weight: bold;
 }
 
-  .container-fluid {
-      padding: 1rem;
-  }
+span{
+  font-size: 1em;
+}
 
-  #weather-dash{
-      border: slategray solid 1px;
+  .container {
+      padding: 1rem;
   }
 
   /* favorable, moderate, or severe */
