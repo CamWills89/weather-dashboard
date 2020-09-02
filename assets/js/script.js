@@ -3,16 +3,13 @@ var searchFormEl = document.querySelector("#search-form");
 var cityInputEl = document.querySelector("#search");
 var weatherContainerEl = document.querySelector("#weather-dash");
 var currentCityEl = document.querySelector("#current-city");
+var currentCityHeaderEl = document.querySelector("#current-city-header");
 var currentCityForecEl = document.querySelector("#current-city-forecast");
 var currentCityIconEl = document.querySelector("#icon");
 var fiveDayWeatherContainerEl = document.querySelector("#five-day-weather");
 // console.log(fiveDayWeatherContainerEl);
 
-//fetch api for current day weather, include error checks.
-//link search form to fetch city
-//create dynamic html for all the data I need to display
-//append it to weather dash container
-//clear search box
+
 var getCityWeather = function (cityName) {
   var apiUrl =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -123,7 +120,6 @@ var displayWeather = function (cityWeather) {
 
   getUvIndex(cityWeather);
 };
-
 
 //fetch api for 5-day weather, include error checks.
 //link search form to fetch city
