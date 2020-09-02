@@ -1,14 +1,15 @@
 //query my containers
 var searchFormEl = document.querySelector("#search-form");
 var cityInputEl = document.querySelector("#search");
-var weatherContainerEl = document.querySelector("#weather-dash");
 var currentCityEl = document.querySelector("#current-city");
-var currentCityHeaderEl = document.querySelector("#current-city-header");
-var currentCityForecEl = document.querySelector("#current-city-forecast");
+var currentTempEl = document.querySelector("#current-temp");
+var currentHumidityEl = document.querySelector("#current-humidity");
+var currentWindSpeedEl = document.querySelector("#current-wind-speed");
+var currentUVIEl = document.querySelector("#current-UVI");
 var currentCityIconEl = document.querySelector("#icon");
 var fiveDayWeatherContainerEl = document.querySelector("#five-day-weather");
-// console.log(fiveDayWeatherContainerEl);
 
+// console.log(fiveDayWeatherContainerEl);
 
 var getCityWeather = function (cityName) {
   var apiUrl =
@@ -59,67 +60,50 @@ var getUvIndex = function (cityWeather) {
     })
     .then(function (data) {
       var currentUvIndex = data.value;
-      
-      var cityUvIndexEl = document.createElement("h3");
-      cityUvIndexEl.textContent = "UV Index: " + currentUvIndex;
-      weatherContainerEl.appendChild(cityUvIndexEl);
+      currentUVIEl.textContent = currentUvIndex;
 
       //display appropriate color according to UVI severity
       if (currentUvIndex < 4) {
-        cityUvIndexEl.classList = "favorable";
+        currentUVIEl.classList = "favorable";
       } else if (currentUvIndex > 4 && currentUvIndex < 7) {
-        cityUvIndexEl.classList = "moderate";
+        currentUVIEl.classList = "moderate";
       } else if (currentUvIndex > 7) {
-        cityUvIndexEl.classList = "severe";
+        currentUVIEl.classList = "severe";
       }
     });
 };
 
 var displayWeather = function (cityWeather) {
-  // clear old content
-  //weatherContainerEl.textContent = "";
-
   //get icon
   var iconCode = cityWeather.weather[0].icon;
   var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
   // console.log(iconUrl);
   currentCityIconEl.setAttribute("src", iconUrl);
-  // console.log(currentCityIconEl);
 
   //convert UNIX date timestamp into readable format
   var currentDate = moment.unix(cityWeather.dt).format("MM/DD/YYYY");
 
   //cityName and date added to the page
-  console.log("Weather Data")
-  console.log(cityWeather)
   currentCity = cityWeather.name + " " + currentDate;
   //console.log(currentCity);
   currentCityEl.textContent = currentCity;
-  weatherContainerEl.appendChild(currentCityEl);
 
   //getting temperature
   var cityTemperature = cityWeather.main.temp;
+  currentTempEl.textContent = cityTemperature;
   //   console.log(cityTemperature);
-  var cityTemperatureEl = document.createElement("h3");
-  cityTemperatureEl.textContent = "Temperature: " + cityTemperature + "℉";
-  weatherContainerEl.appendChild(cityTemperatureEl);
 
   //getting humidity
   var cityHumidity = cityWeather.main.humidity;
+  currentHumidityEl.textContent = cityHumidity;
   //   console.log(cityHumidity);
-  var cityHumidityEl = document.createElement("h3");
-  cityHumidityEl.textContent = "Humidity: " + cityHumidity + "℉";
-  weatherContainerEl.appendChild(cityHumidityEl);
-  +"%";
 
   //getting wind speed
   var cityWindSpeed = cityWeather.wind.speed;
+  currentWindSpeedEl.textContent = cityWindSpeed;
   //   console.log(cityWindSpeed);
-  var cityWindSpeedEl = document.createElement("h3");
-  cityWindSpeedEl.textContent = "Wind Speed: " + cityWindSpeed + "℉";
-  weatherContainerEl.appendChild(cityWindSpeedEl);
-  +"MPH";
 
+  //display uv index
   getUvIndex(cityWeather);
 };
 
@@ -149,22 +133,85 @@ var getFiveDayWeather = function (cityName) {
 };
 
 var displayFiveDayWeather = function (cityWeather) {
-  // clear old content
-  fiveDayWeatherContainerEl.textContent = "";
+  //display first day of forecast
   //convert UNIX date timestamp into readable format
   var currentDate = moment.unix(cityWeather.list[0].dt).format("MM/DD/YYYY");
-  console.log(currentDate);
+  //get icon
   var iconCode = cityWeather.list[0].weather[0].icon;
   var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-  console.log(iconUrl);
-
   //getting temperature
   var cityTemperature = cityWeather.list[0].main.temp;
-  console.log(cityTemperature);
-
   //getting humidity
   var cityHumidity = cityWeather.list[0].main.humidity;
-  console.log(cityHumidity);
+  //update
+  $("#current-city-date1").text(currentDate);
+  $("#icon1").attr("src", iconUrl);
+  $("#current-temp1").text(cityTemperature);
+  $("#current-humidity1").text(cityHumidity);
+
+  //display second day of forecast
+  //convert UNIX date timestamp into readable format
+  var currentDate = moment.unix(cityWeather.list[1].dt).format("MM/DD/YYYY");
+  //get icon
+  var iconCode = cityWeather.list[1].weather[0].icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  //getting temperature
+  var cityTemperature = cityWeather.list[1].main.temp;
+  //getting humidity
+  var cityHumidity = cityWeather.list[1].main.humidity;
+  //update
+  $("#current-city-date2").text(currentDate);
+  $("#icon2").attr("src", iconUrl);
+  $("#current-temp2").text(cityTemperature);
+  $("#current-humidity2").text(cityHumidity);
+
+  //display third day of forecast
+  //convert UNIX date timestamp into readable format
+  var currentDate = moment.unix(cityWeather.list[2].dt).format("MM/DD/YYYY");
+  //get icon
+  var iconCode = cityWeather.list[2].weather[0].icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  //getting temperature
+  var cityTemperature = cityWeather.list[2].main.temp;
+  //getting humidity
+  var cityHumidity = cityWeather.list[2].main.humidity;
+  //update
+  $("#current-city-date3").text(currentDate);
+  $("#icon3").attr("src", iconUrl);
+  $("#current-temp3").text(cityTemperature);
+  $("#current-humidity3").text(cityHumidity);
+
+  //display fourth day of forecast
+  //convert UNIX date timestamp into readable format
+  var currentDate = moment.unix(cityWeather.list[3].dt).format("MM/DD/YYYY");
+  //get icon
+  var iconCode = cityWeather.list[3].weather[0].icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  //getting temperature
+  var cityTemperature = cityWeather.list[3].main.temp;
+  //getting humidity
+  var cityHumidity = cityWeather.list[3].main.humidity;
+  //update
+  $("#current-city-date4").text(currentDate);
+  $("#icon4").attr("src", iconUrl);
+  $("#current-temp4").text(cityTemperature);
+  $("#current-humidity4").text(cityHumidity);
+
+  //display fifth day of forecast
+  //convert UNIX date timestamp into readable format
+  var currentDate = moment.unix(cityWeather.list[4].dt).format("MM/DD/YYYY");
+  //get icon
+  var iconCode = cityWeather.list[4].weather[0].icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  //getting temperature
+  var cityTemperature = cityWeather.list[4].main.temp;
+  //getting humidity
+  var cityHumidity = cityWeather.list[4].main.humidity;
+  //update
+  $("#current-city-date5").text(currentDate);
+  $("#icon5").attr("src", iconUrl);
+  $("#current-temp5").text(cityTemperature);
+  $("#current-humidity5").text(cityHumidity);
 };
 
 //event listeners

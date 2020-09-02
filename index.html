@@ -21,8 +21,8 @@
     <main>
         <div class="container-fluid">
             <!-- Search form container -->
-            <div class="row">
-                <div class="col-sm-4">
+            <div class="row d-inline-flex justify-content-between flex-wrap">
+                <div class="col-sm-2 ">
                     <h2 for="search">Search for a City:</h2>
                     <form id="search-form" class="input-group mb-3">
                         <div class="input-group-append">
@@ -33,25 +33,64 @@
                         </div>
                     </form>
                     <!-- Search history container -->
-                    <div id="search history" class="col-sm-4">
+                    <div id="search history" class="col-sm">
                         <h2>search history</h2>
+                        <ul></ul>
                     </div>
                 </div>
                 <div>
                     <!-- display weather dashboard container -->
-                    <div id="weather-dash" class="col-sm-8">
-                        <h2 id="current-city"></h2>
-                        <img id="icon" src="">
+                    <div id="weather-dash" class="col-sm mb-2">
+                        <h2>City: <span id="current-city"></span> <img id="icon" src=""></h2>
+                        <h3>Temperature: <span id="current-temp"> </span> ℉</h3>
+                        <h3>Humidity: <span id="current-humidity"></span> %</h3>
+                        <h3>Wind Speed: <span id="current-wind-speed"></span> MPH</h3>
+                        <h3>UV Index: <span id="current-UVI"></span></h3>
                     </div>
                     <!-- display 5-day Weather container -->
-                    <div id="five-day-weather" class="col-sm-8">
-                        <h2 id="current-city-forecast"><img id="forecast-icon" src=""></h2>
+                    <div>
+                        <div>
+                            <h2 id="current-city-forecast">5 Day Weather Forecast:</h2>
+                        </div>
+                        <div id="five-day-weather" class="card-deck ">
+                            <div id="weather-dash1" class="card">
+                                <h3>Date: <span id="current-city-date1"></span></h3>
+                                <div><img id="icon1" src=""></div>
+                                <p>Temperature: <span id="current-temp1"> </span> ℉</p>
+                                <p>Humidity: <span id="current-humidity1"></span> %</p>
+                            </div>
+                            <div id="weather-dash2" class="card">
+                                <h3>Date: <span id="current-city-date2"></span></h3>
+                                <div><img id="icon2" src=""></div>
+                                <p>Temperature: <span id="current-temp2"> </span> ℉</p>
+                                <p>Humidity: <span id="current-humidity2"></span> %</p>
+                            </div>
+                            <div id="weather-dash3" class="card">
+                                <h3>Date: <span id="current-city-date3"></span></h3>
+                                <div><img id="icon3" src=""></div>
+                                <p>Temperature: <span id="current-temp3"> </span> ℉</p>
+                                <p>Humidity: <span id="current-humidity3"></span> %</p>
+                            </div>
+                            <div id="weather-dash4" class="card">
+                                <h3>Date: <span id="current-city-date4"></span></h3>
+                                <div><img id="icon4" src=""></div>
+                                <p>Temperature: <span id="current-temp4"> </span> ℉</p>
+                                <p>Humidity: <span id="current-humidity4"></span> %</p>
+                            </div>
+                            <div id="weather-dash5" class="card">
+                                <h3>Date: <span id="current-city-date5"></span></h3>
+                                <div><img id="icon5" src=""></div>
+                                <p>Temperature: <span id="current-temp5"> </span> ℉</p>
+                                <p>Humidity: <span id="current-humidity5"></span> %</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         </div>
     </main>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
         integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
         crossorigin="anonymous"></script>
