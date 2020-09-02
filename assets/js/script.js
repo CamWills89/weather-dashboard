@@ -77,7 +77,7 @@ var getUvIndex = function (cityWeather) {
 
 var displayWeather = function (cityWeather) {
   // clear old content
-  weatherContainerEl.textContent = "";
+  //weatherContainerEl.textContent = "";
 
   //get icon
   var iconCode = cityWeather.weather[0].icon;
@@ -90,6 +90,8 @@ var displayWeather = function (cityWeather) {
   var currentDate = moment.unix(cityWeather.dt).format("MM/DD/YYYY");
 
   //cityName and date added to the page
+  console.log("Weather Data")
+  console.log(cityWeather)
   currentCity = cityWeather.name + " " + currentDate;
   //console.log(currentCity);
   currentCityEl.textContent = currentCity;
