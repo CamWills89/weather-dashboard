@@ -40,21 +40,39 @@ var searchHandler = function (event) {
     getCityWeather(cityName);
     cityInputEl.value = "";
   } else {
-    alert("Please enter a City Name");
+    document.location.replace("./index.html");
   }
 };
 
-var getUvIndex = function (){
-     //getting UV Index
- var currentLat = cityWeather.coord.lat;
- var currentLon = cityWeather.coord.lon;
- var uvIndex = "http://api.openweathermap.org/data/2.5/uvi?appid=729f5bb07186b173f99eddc857ac24ca&lat=" + currentLat + "&lon=" + currentLon;
-    var j = fetch(uvIndex).then(function(response) {
-  response.json().then(function(data) {
-    console.log(data.value);
-  });
-});
-}
+var getUvIndex = function (cityWeather) {
+  //getting UV Index
+  var currentLat = cityWeather.coord.lat;
+  var currentLon = cityWeather.coord.lon;
+  var uvApiUrl =
+    "http://api.openweathermap.org/data/2.5/uvi?appid=729f5bb07186b173f99eddc857ac24ca&lat=" +
+    currentLat +
+    "&lon=" +
+    currentLon;
+  var uvIndex = fetch(uvApiUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      var currentUvIndex = data.value;
+      var cityUvIndexEl = document.createElement("h3");
+
+      cityUvIndexEl.textContent = "UV Index: " + currentUvIndex;
+      weatherContainerEl.appendChild(cityUvIndexEl);
+
+      if (currentUvIndex < 4) {
+        cityUvIndexEl.classList = "favorable";
+      } else if (currentUvIndex > 4 && currentUvIndex < 7) {
+        cityUvIndexEl.classList = "moderate";
+      } else if (currentUvIndex > 7) {
+        cityUvIndexEl.classList = "severe";
+      }
+    });
+};
 
 var displayWeather = function (cityWeather) {
   // clear old content
@@ -68,24 +86,24 @@ var displayWeather = function (cityWeather) {
   var iconImage = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
   // console.log(iconImage);
   currentCityIconEl.setAttribute("src", iconImage);
-//   console.log(currentCityIconEl);
+  //   console.log(currentCityIconEl);
 
   //cityName and date added to the page
   currentCity = cityWeather.name + " " + currentDate;
-//   console.log(currentCity);
+  //   console.log(currentCity);
   currentCityEl.textContent = currentCity;
   weatherContainerEl.appendChild(currentCityEl);
 
   //getting temperature
   var cityTemperature = cityWeather.main.temp;
-//   console.log(cityTemperature);
+  //   console.log(cityTemperature);
   var cityTemperatureEl = document.createElement("h3");
   cityTemperatureEl.textContent = "Temperature: " + cityTemperature + "℉";
   weatherContainerEl.appendChild(cityTemperatureEl);
 
   //getting humidity
   var cityHumidity = cityWeather.main.humidity;
-//   console.log(cityHumidity);
+  //   console.log(cityHumidity);
   var cityHumidityEl = document.createElement("h3");
   cityHumidityEl.textContent = "Humidity: " + cityHumidity + "℉";
   weatherContainerEl.appendChild(cityHumidityEl);
@@ -93,14 +111,14 @@ var displayWeather = function (cityWeather) {
 
   //getting wind speed
   var cityWindSpeed = cityWeather.wind.speed;
-//   console.log(cityWindSpeed);
+  //   console.log(cityWindSpeed);
   var cityWindSpeedEl = document.createElement("h3");
   cityWindSpeedEl.textContent = "Wind Speed: " + cityWindSpeed + "℉";
   weatherContainerEl.appendChild(cityWindSpeedEl);
   +"MPH";
 
+  getUvIndex(cityWeather);
 };
-
 
 //fetch api for 5-day weather, include error checks.
 //link search form to fetch city
