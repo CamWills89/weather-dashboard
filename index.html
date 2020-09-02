@@ -20,33 +20,37 @@
 
     <main>
         <div class="container-fluid">
+            <!-- Search form container -->
             <div class="row">
                 <div class="col-sm-4">
+                    <h2 for="search">Search for a City:</h2>
                     <form id="search-form" class="input-group mb-3">
-                        <h2 for="search">Search for a City:</h2>
                         <div class="input-group-append">
-                        <input type="text" id="search" placeholder="Search for City" aria-label="Search for City"
-                            aria-describedby="button-addon2">
+                            <input type="text" id="search" placeholder="Search for City" aria-label="Search for City"
+                                aria-describedby="button-addon2">
                             <button class="btn btn-primary" type="submit"><span class="oi"
                                     data-glyph="magnifying-glass"></span></button>
                         </div>
                     </form>
-    
+                    <!-- Search history container -->
                     <div id="search history" class="col-sm-4">
                         <h2>search history</h2>
                     </div>
                 </div>
                 <div>
-                    <div id="weather-dash" class="col-sm-8"><h2>Weather</h2></div>
+                    <!-- display weather dashboard container -->
+                    <div id="weather-dash" class="col-sm-8">
+                        <h2 id="current-city"><span id="icon"><img src=""></span></h2>
+                    </div>
+                    <!-- display 5-day Weather container -->
                     <div id="five-day-weather" class="col-sm-8">
-                        <h2>5-day weaher</h2>
+                        
                     </div>
                 </div>
-                </div>
+            </div>
         </div>
     </main>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
     <script src="assets/js/script.js"></script>
 </body>
-
 </html>

@@ -23,3 +23,9 @@ body {
   .container-fluid {
       padding: 1rem;
   }
+
+  #weather-dash{
+      border-top: slategray solid 1px;
+      border-left: slategray solid 1px;
+      border-bottom: slategray solid 1px;
+  }
