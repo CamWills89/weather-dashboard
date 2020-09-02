@@ -39,10 +39,13 @@ var searchHandler = function (event) {
   if (cityName) {
     getCityWeather(cityName);
     getFiveDayWeather(cityName);
+    searchHistory(cityName);
     cityInputEl.value = "";
   } else {
     document.location.replace("./index.html");
   }
+
+  localStorage.setItem("city", cityName)
 };
 
 var getUvIndex = function (cityWeather) {
@@ -107,15 +110,6 @@ var displayWeather = function (cityWeather) {
   getUvIndex(cityWeather);
 };
 
-//fetch api for 5-day weather, include error checks.
-//link search form to fetch city
-//create dynamic html for all the data I need to display in 5 boces/cards
-//append it to weather dash container
-//clear search box
-
-//store search history in local storage
-//display search history in search history container
-//enable it to be selected to display weather
 var getFiveDayWeather = function (cityName) {
   var apiUrl =
     "https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -214,5 +208,21 @@ var displayFiveDayWeather = function (cityWeather) {
   $("#current-humidity5").text(cityHumidity);
 };
 
+//store search history in local storage
+//display search history in search history container
+//enable it to be selected to display weather
+
+var searchHistory = function(cityName) {
+ var city = localStorage.getItem("city")
+  // console.log(typeof city);
+  var ListEL = document.createElement("li")
+  ListEL.textContent = city;
+console.log(ListEL);
+  $("#search-history").append(ListEL);
+}
+
+var display = function() {
+  
+}
 //event listeners
 searchFormEl.addEventListener("submit", searchHandler);
