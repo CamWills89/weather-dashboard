@@ -3,8 +3,10 @@ var searchFormEl = document.querySelector("#search-form");
 var cityInputEl = document.querySelector("#search");
 var weatherContainerEl = document.querySelector("#weather-dash");
 var currentCityEl = document.querySelector("#current-city");
+var currentCityForecEl = document.querySelector("#current-city-forecast");
 var currentCityIconEl = document.querySelector("#icon");
-// console.log(currentCityIconEl);
+var fiveDayWeatherContainerEl = document.querySelector("#five-day-weather");
+// console.log(fiveDayWeatherContainerEl);
 
 //fetch api for current day weather, include error checks.
 //link search form to fetch city
@@ -38,6 +40,7 @@ var searchHandler = function (event) {
 
   if (cityName) {
     getCityWeather(cityName);
+    getFiveDayWeather(cityName);
     cityInputEl.value = "";
   } else {
     document.location.replace("./index.html");
@@ -59,11 +62,12 @@ var getUvIndex = function (cityWeather) {
     })
     .then(function (data) {
       var currentUvIndex = data.value;
+      
       var cityUvIndexEl = document.createElement("h3");
-
       cityUvIndexEl.textContent = "UV Index: " + currentUvIndex;
       weatherContainerEl.appendChild(cityUvIndexEl);
 
+      //display appropriate color according to UVI severity
       if (currentUvIndex < 4) {
         cityUvIndexEl.classList = "favorable";
       } else if (currentUvIndex > 4 && currentUvIndex < 7) {
@@ -78,19 +82,19 @@ var displayWeather = function (cityWeather) {
   // clear old content
   weatherContainerEl.textContent = "";
 
+  //get icon
+  var iconCode = cityWeather.weather[0].icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  // console.log(iconUrl);
+  currentCityIconEl.setAttribute("src", iconUrl);
+  // console.log(currentCityIconEl);
+
   //convert UNIX date timestamp into readable format
   var currentDate = moment.unix(cityWeather.dt).format("MM/DD/YYYY");
 
-  //get icon
-  var iconCode = cityWeather.weather[0].icon;
-  var iconImage = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
-  // console.log(iconImage);
-  currentCityIconEl.setAttribute("src", iconImage);
-  //   console.log(currentCityIconEl);
-
   //cityName and date added to the page
   currentCity = cityWeather.name + " " + currentDate;
-  //   console.log(currentCity);
+  //console.log(currentCity);
   currentCityEl.textContent = currentCity;
   weatherContainerEl.appendChild(currentCityEl);
 
@@ -120,6 +124,7 @@ var displayWeather = function (cityWeather) {
   getUvIndex(cityWeather);
 };
 
+
 //fetch api for 5-day weather, include error checks.
 //link search form to fetch city
 //create dynamic html for all the data I need to display in 5 boces/cards
@@ -129,6 +134,40 @@ var displayWeather = function (cityWeather) {
 //store search history in local storage
 //display search history in search history container
 //enable it to be selected to display weather
+var getFiveDayWeather = function (cityName) {
+  var apiUrl =
+    "https://api.openweathermap.org/data/2.5/forecast?q=" +
+    cityName +
+    "&units=imperial" +
+    "&appid=729f5bb07186b173f99eddc857ac24ca";
+
+  fetch(apiUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      displayFiveDayWeather(data, cityName);
+    });
+};
+
+var displayFiveDayWeather = function (cityWeather) {
+  // clear old content
+  fiveDayWeatherContainerEl.textContent = "";
+  //convert UNIX date timestamp into readable format
+  var currentDate = moment.unix(cityWeather.list[0].dt).format("MM/DD/YYYY");
+  console.log(currentDate);
+  var iconCode = cityWeather.list[0].weather[0].icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  console.log(iconUrl);
+
+  //getting temperature
+  var cityTemperature = cityWeather.list[0].main.temp;
+  console.log(cityTemperature);
+
+  //getting humidity
+  var cityHumidity = cityWeather.list[0].main.humidity;
+  console.log(cityHumidity);
+};
 
 //event listeners
 searchFormEl.addEventListener("submit", searchHandler);
