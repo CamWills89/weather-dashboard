@@ -9,6 +9,26 @@ var currentUVIEl = document.querySelector("#current-UVI");
 var currentCityIconEl = document.querySelector("#icon");
 var fiveDayWeatherContainerEl = document.querySelector("#five-day-weather");
 
+var cityName = "";
+var cities = [];
+
+var loadCities = function () {
+  var cities = localStorage.getItem('cities');
+
+  var ListEL = document.createElement("li");
+    ListEL.textContent = (cities.toUpperCase());
+    $("#search-history").append(ListEL)
+
+    //this for loop does work, i think because it is a string
+
+  // for (var i = 0; i < cities.length; i++) {
+  //   var ListEL = document.createElement("li");
+  //   ListEL.textContent = (cities[i].toUpperCase());
+  //   $("#search-history").append(ListEL)
+  }
+  
+}
+
 // console.log(fiveDayWeatherContainerEl);
 
 var getCityWeather = function (cityName) {
@@ -39,13 +59,18 @@ var searchHandler = function (event) {
   if (cityName) {
     getCityWeather(cityName);
     getFiveDayWeather(cityName);
-    searchHistory(cityName);
+    displaySearchHistory(cityName);
     cityInputEl.value = "";
   } else {
     document.location.replace("./index.html");
   }
-
-  localStorage.setItem("city", cityName)
+ 
+ 
+   if(!cities) {
+     cities = []
+   }
+    cities.push(cityName);
+    localStorage.setItem("cities", cities);
 };
 
 var getUvIndex = function (cityWeather) {
@@ -78,8 +103,8 @@ var getUvIndex = function (cityWeather) {
 
 var displayWeather = function (cityWeather) {
   //get icon
-  var iconCode = cityWeather.weather[0].icon;
-  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  var icon = cityWeather.weather[0].icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
   // console.log(iconUrl);
   currentCityIconEl.setAttribute("src", iconUrl);
 
@@ -121,108 +146,49 @@ var getFiveDayWeather = function (cityName) {
     .then(function (response) {
       return response.json();
     })
-    .then(function (data) {
-      displayFiveDayWeather(data, cityName);
+    .then(function (cityWeather) {
+      for (var i = 0; i < 5; i++) {
+        var currentDate = moment
+          .unix(cityWeather.list[(i + 1) * 8 - 1].dt)
+          .format("MM/DD/YYYY");
+        //get icon
+        var icon = cityWeather.list[(i + 1) * 8 - 1].weather[0].icon;
+        var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+        //getting temperature
+        var cityTemperature = cityWeather.list[(i + 1) * 8 - 1].main.temp;
+        //getting humidity
+        var cityHumidity = cityWeather.list[(i + 1) * 8 - 1].main.humidity;
+        //update
+        $("#current-city-date" + i).html(currentDate);
+        $("#icon" + i).attr("src", iconUrl);
+        $("#current-temp" + i).html(cityTemperature);
+        $("#current-humidity" + i).html(cityHumidity);
+      }
     });
 };
-
-var displayFiveDayWeather = function (cityWeather) {
-  //display first day of forecast
-  //convert UNIX date timestamp into readable format
-  var currentDate = moment.unix(cityWeather.list[0].dt).format("MM/DD/YYYY");
-  //get icon
-  var iconCode = cityWeather.list[0].weather[0].icon;
-  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-  //getting temperature
-  var cityTemperature = cityWeather.list[0].main.temp;
-  //getting humidity
-  var cityHumidity = cityWeather.list[0].main.humidity;
-  //update
-  $("#current-city-date1").text(currentDate);
-  $("#icon1").attr("src", iconUrl);
-  $("#current-temp1").text(cityTemperature);
-  $("#current-humidity1").text(cityHumidity);
-
-  //display second day of forecast
-  //convert UNIX date timestamp into readable format
-  var currentDate = moment.unix(cityWeather.list[1].dt).format("MM/DD/YYYY");
-  //get icon
-  var iconCode = cityWeather.list[1].weather[0].icon;
-  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-  //getting temperature
-  var cityTemperature = cityWeather.list[1].main.temp;
-  //getting humidity
-  var cityHumidity = cityWeather.list[1].main.humidity;
-  //update
-  $("#current-city-date2").text(currentDate);
-  $("#icon2").attr("src", iconUrl);
-  $("#current-temp2").text(cityTemperature);
-  $("#current-humidity2").text(cityHumidity);
-
-  //display third day of forecast
-  //convert UNIX date timestamp into readable format
-  var currentDate = moment.unix(cityWeather.list[2].dt).format("MM/DD/YYYY");
-  //get icon
-  var iconCode = cityWeather.list[2].weather[0].icon;
-  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-  //getting temperature
-  var cityTemperature = cityWeather.list[2].main.temp;
-  //getting humidity
-  var cityHumidity = cityWeather.list[2].main.humidity;
-  //update
-  $("#current-city-date3").text(currentDate);
-  $("#icon3").attr("src", iconUrl);
-  $("#current-temp3").text(cityTemperature);
-  $("#current-humidity3").text(cityHumidity);
-
-  //display fourth day of forecast
-  //convert UNIX date timestamp into readable format
-  var currentDate = moment.unix(cityWeather.list[3].dt).format("MM/DD/YYYY");
-  //get icon
-  var iconCode = cityWeather.list[3].weather[0].icon;
-  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-  //getting temperature
-  var cityTemperature = cityWeather.list[3].main.temp;
-  //getting humidity
-  var cityHumidity = cityWeather.list[3].main.humidity;
-  //update
-  $("#current-city-date4").text(currentDate);
-  $("#icon4").attr("src", iconUrl);
-  $("#current-temp4").text(cityTemperature);
-  $("#current-humidity4").text(cityHumidity);
-
-  //display fifth day of forecast
-  //convert UNIX date timestamp into readable format
-  var currentDate = moment.unix(cityWeather.list[4].dt).format("MM/DD/YYYY");
-  //get icon
-  var iconCode = cityWeather.list[4].weather[0].icon;
-  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-  //getting temperature
-  var cityTemperature = cityWeather.list[4].main.temp;
-  //getting humidity
-  var cityHumidity = cityWeather.list[4].main.humidity;
-  //update
-  $("#current-city-date5").text(currentDate);
-  $("#icon5").attr("src", iconUrl);
-  $("#current-temp5").text(cityTemperature);
-  $("#current-humidity5").text(cityHumidity);
-};
-
 //store search history in local storage
 //display search history in search history container
 //enable it to be selected to display weather
 
-var searchHistory = function(cityName) {
- var city = localStorage.getItem("city")
+var displaySearchHistory = function (cityName) {
   // console.log(typeof city);
-  var ListEL = document.createElement("li")
-  ListEL.textContent = city;
-console.log(ListEL);
-  $("#search-history").append(ListEL);
-}
+  if (cityName) {
+    var ListEL = document.createElement("li");
+    ListEL.textContent = (cityName.toUpperCase());
+    $("#search-history").append(ListEL);
+  } else {
+    return;
+  }
+};
 
-var display = function() {
-  
-}
+var searchHistoryList = function (event) {
+  var listEl=event.target;
+  if (event.target.matches("li")){
+      getCityWeather(listEl.textContent);
+      getFiveDayWeather(listEl.textContent);
+    }
+};
 //event listeners
 searchFormEl.addEventListener("submit", searchHandler);
+document.addEventListener("click", searchHistoryList);
+loadCities();
