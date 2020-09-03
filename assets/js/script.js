@@ -25,7 +25,7 @@ var loadCities = function () {
   //   var ListEL = document.createElement("li");
   //   ListEL.textContent = (cities[i].toUpperCase());
   //   $("#search-history").append(ListEL)
-  }
+  // }
   
 }
 
