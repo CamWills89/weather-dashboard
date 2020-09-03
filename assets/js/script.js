@@ -1,4 +1,4 @@
-//query selectors 
+//query selectors
 var searchFormEl = document.querySelector("#search-form");
 var cityInputEl = document.querySelector("#search");
 var currentCityEl = document.querySelector("#current-city");
@@ -151,7 +151,9 @@ var getFiveDayWeather = function (cityName) {
         var icon = cityWeather.list[(i + 1) * 8 - 1].weather[0].icon;
         var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
         //getting temperature for each day
-        var cityTemperature = Math.floor(cityWeather.list[(i + 1) * 8 - 1].main.temp);
+        var cityTemperature = Math.floor(
+          cityWeather.list[(i + 1) * 8 - 1].main.temp
+        );
         //getting humidity for each day
         var cityHumidity = cityWeather.list[(i + 1) * 8 - 1].main.humidity;
         //update cards to display the appropriate weather for each day
