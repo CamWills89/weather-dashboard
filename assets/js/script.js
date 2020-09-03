@@ -1,4 +1,4 @@
-//query my containers
+//query selectors 
 var searchFormEl = document.querySelector("#search-form");
 var cityInputEl = document.querySelector("#search");
 var currentCityEl = document.querySelector("#current-city");
@@ -8,22 +8,25 @@ var currentWindSpeedEl = document.querySelector("#current-wind-speed");
 var currentUVIEl = document.querySelector("#current-UVI");
 var currentCityIconEl = document.querySelector("#icon");
 var fiveDayWeatherContainerEl = document.querySelector("#five-day-weather");
+var clearHistoryEl = document.querySelector("#clear-history");
 
-var cityName = "";
+//array to store city names in local storage
 var cities = [];
 
+//load items so they persist after reload
 var loadCities = function () {
- cities = JSON.parse(localStorage.getItem('cities')) || [];
+  //get items from storage if there are any
+  cities = JSON.parse(localStorage.getItem("cities")) || [];
 
+  //loop over and populate search history
   for (var i = 0; i < cities.length; i++) {
     var listEL = document.createElement("li");
-    listEL.textContent = (cities[i].toUpperCase());
-    $("#search-history").append(listEL)
-  };
+    listEL.textContent = cities[i].toUpperCase();
+    $("#search-history").append(listEL);
+  }
 };
 
-// console.log(fiveDayWeatherContainerEl);
-
+//get the weather data from the api
 var getCityWeather = function (cityName) {
   var apiUrl =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -34,6 +37,7 @@ var getCityWeather = function (cityName) {
   fetch(apiUrl).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
+        //use data to display the weather
         displayWeather(data, cityName);
       });
     } else {
@@ -45,35 +49,29 @@ var getCityWeather = function (cityName) {
 
 var searchHandler = function (event) {
   event.preventDefault();
-
-  //get search value
+  //get the text from the input field
   var cityName = cityInputEl.value.trim();
-
+  //use the text to display weather data and create a search history list
   if (cityName) {
     getCityWeather(cityName);
     getFiveDayWeather(cityName);
     displaySearchHistory(cityName);
     cityInputEl.value = "";
   } else {
-    // document.location.replace("./index.html");
-    return
+    return;
   }
- 
-  //  if(!cities) {
-  //    cities = []
-  //  }
 
-  // indexOf
-   if(cities.indexOf(cityName) === -1) {
-     cities.push(cityName);
-     JSON.stringify(localStorage.setItem("cities", JSON.stringify(cities)));
-    }else {
-      document.location.replace("./index.html");
-   }
+  // store city in localStorage if the item doesn't already exist in storage and list
+  if (cities.indexOf(cityName) === -1) {
+    cities.push(cityName);
+    JSON.stringify(localStorage.setItem("cities", JSON.stringify(cities)));
+  } else {
+    return;
+  }
 };
 
 var getUvIndex = function (cityWeather) {
-  //getting UV Index
+  //getting UV Index for the city searched for
   var currentLat = cityWeather.coord.lat;
   var currentLon = cityWeather.coord.lon;
   var uvApiUrl =
@@ -100,40 +98,37 @@ var getUvIndex = function (cityWeather) {
     });
 };
 
+//display that city's weather for the day
 var displayWeather = function (cityWeather) {
-  //get icon
+  //get weather icon
   var icon = cityWeather.weather[0].icon;
   var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
-  // console.log(iconUrl);
   currentCityIconEl.setAttribute("src", iconUrl);
 
   //convert UNIX date timestamp into readable format
   var currentDate = moment.unix(cityWeather.dt).format("MM/DD/YYYY");
 
-  //cityName and date added to the page
+  //display the name of the city and the current date
   currentCity = cityWeather.name + " " + currentDate;
-  //console.log(currentCity);
   currentCityEl.textContent = currentCity;
 
-  //getting temperature
-  var cityTemperature = cityWeather.main.temp;
+  //display that city's temperature
+  var cityTemperature = Math.floor(cityWeather.main.temp);
   currentTempEl.textContent = cityTemperature;
-  //   console.log(cityTemperature);
 
-  //getting humidity
+  //display that city's humidity
   var cityHumidity = cityWeather.main.humidity;
   currentHumidityEl.textContent = cityHumidity;
-  //   console.log(cityHumidity);
 
-  //getting wind speed
+  //display that city's wind speed
   var cityWindSpeed = cityWeather.wind.speed;
   currentWindSpeedEl.textContent = cityWindSpeed;
-  //   console.log(cityWindSpeed);
 
-  //display uv index
+  //display that city's uv index
   getUvIndex(cityWeather);
 };
 
+//display that city's five day weather forecast
 var getFiveDayWeather = function (cityName) {
   var apiUrl =
     "https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -146,48 +141,58 @@ var getFiveDayWeather = function (cityName) {
       return response.json();
     })
     .then(function (cityWeather) {
+      //loop through five day weather and display it in the corresponding html cards
       for (var i = 0; i < 5; i++) {
+        //get date for each day
         var currentDate = moment
           .unix(cityWeather.list[(i + 1) * 8 - 1].dt)
-          .format("MM/DD/YYYY");
-        //get icon
+          .format("dddd MM/DD/YYYY");
+        //get weather icon for each day
         var icon = cityWeather.list[(i + 1) * 8 - 1].weather[0].icon;
         var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
-        //getting temperature
-        var cityTemperature = cityWeather.list[(i + 1) * 8 - 1].main.temp;
-        //getting humidity
+        //getting temperature for each day
+        var cityTemperature = Math.floor(cityWeather.list[(i + 1) * 8 - 1].main.temp);
+        //getting humidity for each day
         var cityHumidity = cityWeather.list[(i + 1) * 8 - 1].main.humidity;
-        //update
+        //update cards to display the appropriate weather for each day
         $("#current-city-date" + i).html(currentDate);
         $("#icon" + i).attr("src", iconUrl);
-        $("#current-temp" + i).html(cityTemperature);
-        $("#current-humidity" + i).html(cityHumidity);
+        $("#current-temp" + i).html("<br>" + cityTemperature);
+        $("#current-humidity" + i).html("<br>" + cityHumidity);
       }
     });
 };
-//store search history in local storage
-//display search history in search history container
-//enable it to be selected to display weather
 
+//build search history list once a city has been searched
 var displaySearchHistory = function (cityName) {
-  // console.log(typeof city);
+  //only add the city to the list if it doesn't already exist
   if (cities.indexOf(cityName) === -1) {
     var listEL = document.createElement("li");
-    listEL.textContent = (cityName.toUpperCase());
+    listEL.textContent = cityName.toUpperCase();
     $("#search-history").append(listEL);
   } else {
     return;
   }
 };
 
-var searchHistoryList = function (event) {
-  var listEL=event.target;
-  if (event.target.matches("li")){
-      getCityWeather(listEL.textContent);
-      getFiveDayWeather(listEL.textContent);
-    }
+//allow user to select a city from the search history and display its weather data
+var selectHistoryItem = function (event) {
+  var listEL = event.target;
+  if (event.target.matches("li")) {
+    getCityWeather(listEL.textContent);
+    getFiveDayWeather(listEL.textContent);
+  }
 };
+
+//User can clear history if they want to start a fresh list
+var clearHistory = function (event) {
+  localStorage.clear();
+  document.location.replace("./index.html");
+};
+
 //event listeners
 searchFormEl.addEventListener("submit", searchHandler);
-document.addEventListener("click", searchHistoryList);
+clearHistoryEl.addEventListener("click", clearHistory);
+document.addEventListener("click", selectHistoryItem);
+
 loadCities();
