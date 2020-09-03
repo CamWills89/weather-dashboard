@@ -75,7 +75,7 @@ var getUvIndex = function (cityWeather) {
   var currentLat = cityWeather.coord.lat;
   var currentLon = cityWeather.coord.lon;
   var uvApiUrl =
-    "http://api.openweathermap.org/data/2.5/uvi?appid=729f5bb07186b173f99eddc857ac24ca&lat=" +
+    "https://api.openweathermap.org/data/2.5/uvi?appid=729f5bb07186b173f99eddc857ac24ca&lat=" +
     currentLat +
     "&lon=" +
     currentLon;
@@ -102,7 +102,7 @@ var getUvIndex = function (cityWeather) {
 var displayWeather = function (cityWeather) {
   //get weather icon
   var icon = cityWeather.weather[0].icon;
-  var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+  var iconUrl = "https://openweathermap.org/img/w/" + icon + ".png";
   currentCityIconEl.setAttribute("src", iconUrl);
 
   //convert UNIX date timestamp into readable format
