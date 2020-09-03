@@ -13,21 +13,14 @@ var cityName = "";
 var cities = [];
 
 var loadCities = function () {
-  var cities = localStorage.getItem('cities');
+ cities = JSON.parse(localStorage.getItem('cities')) || [];
 
-  var ListEL = document.createElement("li");
-    ListEL.textContent = (cities.toUpperCase());
-    $("#search-history").append(ListEL)
-
-    //this for loop does work, i think because it is a string
-
-  // for (var i = 0; i < cities.length; i++) {
-  //   var ListEL = document.createElement("li");
-  //   ListEL.textContent = (cities[i].toUpperCase());
-  //   $("#search-history").append(ListEL)
-  // }
-  
-}
+  for (var i = 0; i < cities.length; i++) {
+    var listEL = document.createElement("li");
+    listEL.textContent = (cities[i].toUpperCase());
+    $("#search-history").append(listEL)
+  };
+};
 
 // console.log(fiveDayWeatherContainerEl);
 
@@ -62,15 +55,21 @@ var searchHandler = function (event) {
     displaySearchHistory(cityName);
     cityInputEl.value = "";
   } else {
-    document.location.replace("./index.html");
+    // document.location.replace("./index.html");
+    return
   }
  
- 
-   if(!cities) {
-     cities = []
+  //  if(!cities) {
+  //    cities = []
+  //  }
+
+  // indexOf
+   if(cities.indexOf(cityName) === -1) {
+     cities.push(cityName);
+     JSON.stringify(localStorage.setItem("cities", JSON.stringify(cities)));
+    }else {
+      document.location.replace("./index.html");
    }
-    cities.push(cityName);
-    localStorage.setItem("cities", cities);
 };
 
 var getUvIndex = function (cityWeather) {
@@ -172,20 +171,20 @@ var getFiveDayWeather = function (cityName) {
 
 var displaySearchHistory = function (cityName) {
   // console.log(typeof city);
-  if (cityName) {
-    var ListEL = document.createElement("li");
-    ListEL.textContent = (cityName.toUpperCase());
-    $("#search-history").append(ListEL);
+  if (cities.indexOf(cityName) === -1) {
+    var listEL = document.createElement("li");
+    listEL.textContent = (cityName.toUpperCase());
+    $("#search-history").append(listEL);
   } else {
     return;
   }
 };
 
 var searchHistoryList = function (event) {
-  var listEl=event.target;
+  var listEL=event.target;
   if (event.target.matches("li")){
-      getCityWeather(listEl.textContent);
-      getFiveDayWeather(listEl.textContent);
+      getCityWeather(listEL.textContent);
+      getFiveDayWeather(listEL.textContent);
     }
 };
 //event listeners

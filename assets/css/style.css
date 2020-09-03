@@ -46,4 +46,11 @@ span{
     color: #000000
   }
   
-  
+  li {
+    border: rgb(59, 58, 58) solid 1px;
+    padding: 10px;
+    list-style: upper-roman; 
+  }
+  li:hover{
+    background-color: rgb(28, 138, 248);
+}
