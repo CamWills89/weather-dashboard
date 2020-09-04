@@ -149,7 +149,7 @@ var getFiveDayWeather = function (cityName) {
           .format("dddd MM/DD/YYYY");
         //get weather icon for each day
         var icon = cityWeather.list[(i + 1) * 8 - 1].weather[0].icon;
-        var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+        var iconUrl = "https://openweathermap.org/img/w/" + icon + ".png";
         //getting temperature for each day
         var cityTemperature = Math.floor(
           cityWeather.list[(i + 1) * 8 - 1].main.temp
