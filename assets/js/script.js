@@ -1,6 +1,7 @@
 //query selectors
 var searchFormEl = document.querySelector("#search-form");
 var cityInputEl = document.querySelector("#search");
+var searchHistoryEl = document.querySelector("#search-history");
 var currentCityEl = document.querySelector("#current-city");
 var currentTempEl = document.querySelector("#current-temp");
 var currentHumidityEl = document.querySelector("#current-humidity");
@@ -22,7 +23,7 @@ var loadCities = function () {
   for (var i = 0; i < cities.length; i++) {
     var listEL = document.createElement("li");
     listEL.textContent = cities[i].toUpperCase();
-    $("#search-history").append(listEL);
+    searchHistoryEl.appendChild(listEL);
   }
 };
 
@@ -157,10 +158,10 @@ var getFiveDayWeather = function (cityName) {
         //getting humidity for each day
         var cityHumidity = cityWeather.list[(i + 1) * 8 - 1].main.humidity;
         //update cards to display the appropriate weather for each day
-        $("#current-city-date" + i).html(currentDate);
-        $("#icon" + i).attr("src", iconUrl);
-        $("#current-temp" + i).html("<br>" + cityTemperature);
-        $("#current-humidity" + i).html("<br>" + cityHumidity);
+        $("#forecast-city-date" + i).html(currentDate);
+        $("#forecast-icon" + i).attr("src", iconUrl);
+        $("#forecast-temp" + i).html("<br>" + cityTemperature);
+        $("#forecast-humidity" + i).html("<br>" + cityHumidity);
       }
     });
 };
